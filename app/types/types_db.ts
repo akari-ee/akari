@@ -20,7 +20,7 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
-          photographer_id: number | null
+          photographer_id: string | null
           thumbnail_photo_id: number | null
           title: string
         }
@@ -29,7 +29,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
-          photographer_id?: number | null
+          photographer_id?: string | null
           thumbnail_photo_id?: number | null
           title: string
         }
@@ -38,7 +38,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
-          photographer_id?: number | null
+          photographer_id?: string | null
           thumbnail_photo_id?: number | null
           title?: string
         }
@@ -110,21 +110,21 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
-          photographer_id: number | null
+          photographer_id: string | null
           platform: Database["public"]["Enums"]["social_platform"]
           url: string
         }
         Insert: {
           created_at?: string | null
           id?: string
-          photographer_id?: number | null
+          photographer_id?: string | null
           platform: Database["public"]["Enums"]["social_platform"]
           url: string
         }
         Update: {
           created_at?: string | null
           id?: string
-          photographer_id?: number | null
+          photographer_id?: string | null
           platform?: Database["public"]["Enums"]["social_platform"]
           url?: string
         }
@@ -141,21 +141,21 @@ export type Database = {
       photographers: {
         Row: {
           created_at: string | null
-          id: number
+          id: string
           introduction: string | null
           name: string
           url: string | null
         }
         Insert: {
           created_at?: string | null
-          id?: number
+          id?: string
           introduction?: string | null
           name: string
           url?: string | null
         }
         Update: {
           created_at?: string | null
-          id?: number
+          id?: string
           introduction?: string | null
           name?: string
           url?: string | null
@@ -170,7 +170,7 @@ export type Database = {
           height: number | null
           id: number
           liked: boolean | null
-          photographer_id: number | null
+          photographer_id: string | null
           url: string
           width: number | null
         }
@@ -181,7 +181,7 @@ export type Database = {
           height?: number | null
           id?: number
           liked?: boolean | null
-          photographer_id?: number | null
+          photographer_id?: string | null
           url: string
           width?: number | null
         }
@@ -192,7 +192,7 @@ export type Database = {
           height?: number | null
           id?: number
           liked?: boolean | null
-          photographer_id?: number | null
+          photographer_id?: string | null
           url?: string
           width?: number | null
         }
@@ -221,12 +221,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      social_platform:
-        | "instagram"
-        | "twitter"
-        | "youtube"
-        | "behance"
-        | "website"
+      social_platform: "instagram" | "x" | "youtube" | "behance" | "website"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -354,13 +349,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      social_platform: [
-        "instagram",
-        "twitter",
-        "youtube",
-        "behance",
-        "website",
-      ],
+      social_platform: ["instagram", "x", "youtube", "behance", "website"],
     },
   },
 } as const
