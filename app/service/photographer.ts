@@ -1,5 +1,5 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
-import { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   dehydrate,
   QueryClient,
@@ -10,6 +10,11 @@ import type { Database } from "~/types/types_db";
 // 타입 분리
 export type Photographer = Database["public"]["Tables"]["photographers"]["Row"];
 
+export type PhotographerDetail = Photographer & {
+  social_link: Database["public"]["Tables"]["photographer_social_links"]["Row"][];
+  collections: Database["public"]["Tables"]["collections"]["Row"][];
+};
+
 // fetch 함수 분리
 export const fetchPhotographerList = async (
   supabase: SupabaseClient
@@ -19,20 +24,22 @@ export const fetchPhotographerList = async (
     .select("*")
     .overrideTypes<Photographer[]>()
     .throwOnError();
+
   return data;
 };
 
 export const fetchPhotographerDetail = async (
   supabase: SupabaseClient,
   id: number
-): Promise<Photographer | null> => {
+): Promise<PhotographerDetail> => {
   const { data } = await supabase
     .from("photographers")
-    .select("*")
+    .select("*, collections(*), social_link:photographer_social_links(*)")
     .eq("id", id)
-    .single<Photographer>()
+    .single<PhotographerDetail>()
     .throwOnError();
-  return data ?? null;
+
+  return data;
 };
 
 // 서비스 객체 개선
@@ -47,13 +54,13 @@ export const photographerService = createQueryKeys("photographer", {
   }),
 });
 
-export const useQueryPhotographerList = (supabase: SupabaseClient) => {
+export const usePhotographerList = (supabase: SupabaseClient) => {
   return useSuspenseQuery({
     ...photographerService.all(supabase),
   });
 };
 
-export const useQueryPhotographer = (supabase: SupabaseClient, id: number) => {
+export const usePhotographer = (supabase: SupabaseClient, id: number) => {
   return useSuspenseQuery({
     ...photographerService.detail(supabase, id),
   });

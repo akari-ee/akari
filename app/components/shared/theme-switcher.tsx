@@ -1,34 +1,34 @@
-import { useState } from "react";
-import { MoonIcon, SunIcon } from "lucide-react";
-
-import { Toggle } from "~/components/ui/toggle";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
 
 export default function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
-  
+  // const [mounted, setMounted] = useState(false);
+
+  // useEffect(() => {
+  //   setMounted(true);
+  // }, []);
+
+  // if (!mounted) return null; // 클라이언트에서만 렌더링
+
   return (
     <div>
-      <Toggle
-        className="group data-[state=on]:hover:bg-muted size-9 data-[state=on]:bg-transparent"
-        pressed={theme === "dark"}
-        onPressedChange={() =>
-          setTheme((prev) => (prev === "light" ? "dark" : "light"))
-        }
-        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      >
-        {/* Note: After dark mode implementation, rely on dark: prefix rather than group-data-[state=on]: */}
-        <MoonIcon
-          size={16}
-          className="shrink-0 scale-0 opacity-0 transition-all group-data-[state=on]:scale-100 group-data-[state=on]:opacity-100"
-          aria-hidden="true"
+      <div className="relative flex items-center gap-2">
+        <Switch
+          id="theme-switcher"
+          checked={theme === "light"}
+          onCheckedChange={() => setTheme(theme === "light" ? "dark" : "light")}
         />
-        <SunIcon
-          size={16}
-          className="absolute shrink-0 scale-100 opacity-100 transition-all group-data-[state=on]:scale-0 group-data-[state=on]:opacity-0"
-          aria-hidden="true"
-        />
-      </Toggle>
+        <Label
+          htmlFor="theme-switcher"
+          className="text-xs text-muted-foreground"
+        >
+          {theme === "light" ? "라이트" : "다크"} 모드 적용 중
+        </Label>
+      </div>
     </div>
   );
 }

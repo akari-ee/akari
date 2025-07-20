@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router";
 import { ChevronLeftIcon } from "lucide-react";

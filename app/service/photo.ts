@@ -42,7 +42,7 @@ export async function getPhotoList({
   supabase,
   pageParam = 1,
   pageSize = DEFAULT_PAGE_SIZE,
-}: GetPhotoListParams): Promise<Photo[]> {
+}: GetPhotoListParams) {
   const { data } = await supabase
     .from("photos")
     .select("*, photographer:photographers(*)")
@@ -93,7 +93,7 @@ export function usePhotoList(
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages, lastPageParam) => lastPageParam + 1,
-    select: (data: InfiniteData<Photo[]>) => data.pages.flat() as Photo[],
+    select: (data) => data.pages.flat(),
     retry: 0,
   });
 }

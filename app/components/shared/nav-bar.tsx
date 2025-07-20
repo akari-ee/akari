@@ -16,14 +16,12 @@ import { useLocation } from "react-router";
 import SearchBar from "./search-bar";
 import { cn } from "~/lib/utils";
 import AuthProfile from "./auth-profile";
-import ThemeSwitcher from "./theme-switcher";
 
 const navigationLinks = [
   { href: "/", label: "사진" },
   { href: "/collection", label: "컬렉션" },
   { href: "/photographer", label: "작가" },
 ];
-
 
 export default function NavBar() {
   const { pathname } = useLocation();
@@ -90,7 +88,6 @@ export default function NavBar() {
         {/* Right side, Auth & Theme */}
         <div className="flex items-center gap-4">
           <AuthProfile />
-          <ThemeSwitcher />
         </div>
       </div>
     </header>

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
+import { toast } from "sonner";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -11,8 +16,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             staleTime: 60 * 1000 * 10,
             retry: false,
             refetchInterval: false,
+            throwOnError: false,
           },
         },
+        queryCache: new QueryCache({
+          onError: (error) => {
+            toast("Event has been created.")
+          },
+        }),
       })
   );
   return (

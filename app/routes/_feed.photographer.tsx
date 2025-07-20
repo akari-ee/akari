@@ -1,20 +1,13 @@
-import { prefetchPhotoList } from "~/service/photo";
-import type { Route } from "./+types/_feed._index";
-import PhotoList from "~/components/photo-list";
-import { HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import { createServerClient } from "~/lib/supabase-server";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Hola" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
+import { prefetchPhotographerList } from "~/service/photographer";
+import type { Route } from "./+types/_feed.photographer";
+import { HydrationBoundary } from "@tanstack/react-query";
+import PhotographerList from "~/components/photographer-list";
 
 export async function loader(args: Route.LoaderArgs) {
   const supabase = await createServerClient();
-  const state = await prefetchPhotoList(supabase);
+  const state = await prefetchPhotographerList(supabase);
 
   return { dehydratedState: state };
 }
@@ -31,12 +24,17 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
 
 clientLoader.hydrate = true as const;
 
-export default function MainRoute({ loaderData }: Route.ComponentProps) {
+export default function PhotographerRoute({
+  loaderData,
+}: Route.ComponentProps) {
   return (
     <HydrationBoundary state={loaderData.dehydratedState}>
-      <main className="flex flex-col items-center justify-center gap-4 py-4 md:py-6 w-full h-full">
+      <main className="flex flex-col justify-center gap-4 py-4 md:py-6 w-full h-full">
+        <header>
+          <h1 className="text-xl font-medium">Photographers</h1>
+        </header>
         <Suspense fallback={<div>Loading...</div>}>
-          <PhotoList />
+          <PhotographerList />
         </Suspense>
       </main>
     </HydrationBoundary>

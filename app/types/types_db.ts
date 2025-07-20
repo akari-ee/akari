@@ -106,6 +106,38 @@ export type Database = {
           },
         ]
       }
+      photographer_social_links: {
+        Row: {
+          created_at: string | null
+          id: string
+          photographer_id: number | null
+          platform: Database["public"]["Enums"]["social_platform"]
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          photographer_id?: number | null
+          platform: Database["public"]["Enums"]["social_platform"]
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          photographer_id?: number | null
+          platform?: Database["public"]["Enums"]["social_platform"]
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photographer_social_links_photographer_id_fkey"
+            columns: ["photographer_id"]
+            isOneToOne: false
+            referencedRelation: "photographers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       photographers: {
         Row: {
           created_at: string | null
@@ -189,7 +221,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      social_platform:
+        | "instagram"
+        | "twitter"
+        | "youtube"
+        | "behance"
+        | "website"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -316,6 +353,14 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      social_platform: [
+        "instagram",
+        "twitter",
+        "youtube",
+        "behance",
+        "website",
+      ],
+    },
   },
 } as const
