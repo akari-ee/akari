@@ -89,3 +89,11 @@ function IconYoutube(props: SVGProps<SVGSVGElement>) {
 }
 
 export { IconBehance, IconWeb, IconInstagram, IconX, IconYoutube };
+
+export const SOCIAL_ICON_MAP = {
+  behance: IconBehance,
+  instagram: IconInstagram,
+  youtube: IconYoutube,
+  x: IconX,
+  website: IconWeb,
+} as const;
