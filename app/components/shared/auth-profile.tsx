@@ -6,9 +6,10 @@ import {
   SignUpButton,
 } from "@clerk/react-router";
 import { Button } from "../ui/button";
-import { BoxesIcon, CameraIcon } from "lucide-react";
+import { BoxesIcon, CameraIcon, ImagesIcon } from "lucide-react";
 import SettingPage from "../profile-page/setting-page";
 import CreatorRegisterPage from "../profile-page/creator-register-page";
+import CollectionPage from "../profile-page/collection-page";
 
 export default function AuthProfile() {
   return (
@@ -40,6 +41,13 @@ export default function AuthProfile() {
             url="creator"
           >
             <CreatorRegisterPage />
+          </UserButton.UserProfilePage>
+          <UserButton.UserProfilePage
+            label="사진⋅컬렉션 관리"
+            labelIcon={<ImagesIcon size={14} />}
+            url="collection"
+          >
+            <CollectionPage />
           </UserButton.UserProfilePage>
           <UserButton.UserProfilePage
             label="기타 설정"
