@@ -1,4 +1,3 @@
-import { useAuth } from "@clerk/react-router";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "~/types/types_db";
 
