@@ -8,7 +8,7 @@ import {
 import { Button } from "../ui/button";
 import { BoxesIcon, CameraIcon } from "lucide-react";
 import SettingPage from "../profile-page/setting-page";
-import CreatorPage from "../profile-page/creator-page";
+import CreatorRegisterPage from "../profile-page/creator-register-page";
 
 export default function AuthProfile() {
   return (
@@ -39,7 +39,7 @@ export default function AuthProfile() {
             labelIcon={<CameraIcon size={14} />}
             url="creator"
           >
-            <CreatorPage />
+            <CreatorRegisterPage />
           </UserButton.UserProfilePage>
           <UserButton.UserProfilePage
             label="기타 설정"

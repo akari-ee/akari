@@ -16,7 +16,7 @@ import { LoaderIcon } from "lucide-react";
 import { useToggleCreator } from "~/hooks/use-toggle-creator";
 import { CToast } from "../shared/custom-toast";
 
-export default function CreatorPage() {
+export default function CreatorRegisterPage() {
   const { mutateAsync, isPending } = useSubmitCreator();
   const { form, onSubmit } = useCreatorForm({ onMutate: mutateAsync });
   const { isCreator, loading, handleToggle } = useToggleCreator({
