@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { toast } from "sonner";
-import { CToastError, CToastSuccess } from "./components/shared/custom-toast";
+import { CToast } from "./components/shared/custom-toast";
 import { TooltipProvider } from "./components/ui/tooltip";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -24,10 +24,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             retry: 0,
             throwOnError: false,
             onError: (error, _, context) => {
-              toast.custom((t) => <CToastError title="에러 발생" />);
+              toast.custom((t) => <CToast title="에러 발생" isError />);
             },
             onSuccess: () => {
-              toast.custom((t) => <CToastSuccess title="성공" />);
+              toast.custom((t) => <CToast title="성공" />);
             },
           },
         },
@@ -40,9 +40,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   );
   return (
     <ThemeProvider defaultTheme={"light"} attribute="class">
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </ThemeProvider>
   );
 }
