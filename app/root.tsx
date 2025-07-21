@@ -56,7 +56,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           position="top-center"
           className="flex justify-center"
           toastOptions={{
-            className: "!rounded-full !w-fit !py-4 !px-8",
+            className: "!rounded-full !w-fit",
           }}
         />
         <ScrollRestoration />
