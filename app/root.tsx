@@ -16,6 +16,13 @@ import Providers from "./providers";
 import { LoaderIcon } from "lucide-react";
 import { Toaster } from "./components/ui/sonner";
 import { koKR } from "@clerk/localizations";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "./components/ui/navigation-menu";
+import { ROUTE_LINK } from "./constant/route";
 
 export async function loader(args: Route.LoaderArgs) {
   return rootAuthLoader(args);
@@ -245,9 +252,26 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
+    <main className="pt-16 p-4 container mx-auto h-dvh flex flex-col justify-center items-center gap-2">
+      <h1 className="font-black text-5xl">{message}</h1>
       <p>{details}</p>
+      <div className="mt-8 flex flex-col gap-2 items-center">
+        <p className="text-sm text-muted-foreground">
+          or you can go
+        </p>
+        <NavigationMenu viewport={false}>
+          <NavigationMenuList className="items-start gap-2">
+            {ROUTE_LINK.map((link, index) => (
+              <NavigationMenuItem key={index}>
+                <NavigationMenuLink href={link.href} className="py-1.5 text-base px-3 hover:underline underline-offset-2">
+                  {link.label}
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
+
       {stack && (
         <pre className="w-full p-4 overflow-x-auto">
           <code>{stack}</code>

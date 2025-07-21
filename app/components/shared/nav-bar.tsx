@@ -16,16 +16,11 @@ import { useLocation } from "react-router";
 import SearchBar from "./search-bar";
 import { cn } from "~/lib/utils";
 import AuthProfile from "./auth-profile";
-
-const navigationLinks = [
-  { href: "/", label: "사진" },
-  { href: "/collection", label: "컬렉션" },
-  { href: "/photographer", label: "작가" },
-];
+import { ROUTE_LINK } from "~/constant/route";
 
 export default function NavBar() {
   const { pathname } = useLocation();
-  const dropdownLabel = navigationLinks.find(
+  const dropdownLabel = ROUTE_LINK.find(
     (link) => link.href === pathname
   )?.label;
 
@@ -45,7 +40,7 @@ export default function NavBar() {
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
+                  {ROUTE_LINK.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink href={link.href} className="py-1.5">
                         {link.label}
@@ -62,7 +57,7 @@ export default function NavBar() {
             {/* Navigation menu */}
             <NavigationMenu>
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
+                {ROUTE_LINK.map((link, index) => (
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
                       href={link.href}
