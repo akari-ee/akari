@@ -13,9 +13,8 @@ export default function PrevButton() {
       className="rounded-full shadow-none"
     >
       <ChevronLeftIcon
-        className="text-default-500"
+        className="text-default-500 size-4"
         strokeWidth={1.5}
-        size={16}
       />
     </Button>
   );
