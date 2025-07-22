@@ -1,12 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { Database } from "~/types/types_db";
 import {
-  dehydrate,
-  QueryClient,
-  useSuspenseInfiniteQuery,
-  useSuspenseQuery,
-  type InfiniteData,
+  queryOptions,
 } from "@tanstack/react-query";
 
 // 타입 별도 선언
@@ -69,59 +64,11 @@ export async function getPhotoDetail({
   return data;
 }
 
-// Query Key Factory
-export const photoQueryKeys = createQueryKeys("photo", {
-  list: (params: { pageParam?: number; pageSize?: number }) => [
-    "list",
-    params.pageParam,
-  ],
-  detail: (id: number) => ["detail", id],
-});
-
-// React Query 훅
-export function usePhotoList(
-  supabase: SupabaseClient,
-  options?: { pageSize?: number }
-) {
-  return useSuspenseInfiniteQuery({
-    ...photoQueryKeys.list({ pageSize: options?.pageSize }),
-    queryFn: ({ pageParam = 1 }) =>
-      getPhotoList({
-        supabase,
-        pageParam,
-        pageSize: options?.pageSize,
-      }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, pages, lastPageParam) => lastPageParam + 1,
-    select: (data) => data.pages.flat(),
-    retry: 0,
-  });
-}
-
-export function usePhotoDetail(supabase: SupabaseClient, id: number) {
-  return useSuspenseQuery({
-    ...photoQueryKeys.detail(id),
-    queryFn: () => getPhotoDetail({ supabase, id }),
-    retry: 0,
-  });
-}
-
-// Prefetch/Dehydrate 함수
-export async function prefetchPhotoList(
-  supabase: SupabaseClient,
-  options?: { pageSize?: number }
-) {
-  const queryClient = new QueryClient();
-  await queryClient.prefetchInfiniteQuery({
-    ...photoQueryKeys.list({ pageSize: options?.pageSize }),
-    queryFn: ({ pageParam = 1 }) =>
-      getPhotoList({
-        supabase,
-        pageParam,
-        pageSize: options?.pageSize,
-      }),
-    initialPageParam: 1,
-  });
-
-  return dehydrate(queryClient);
-}
+export const photoQueryOptions = {
+  all: ["photos"] as const,
+  detail: (supabase: SupabaseClient, id: Photo["id"]) =>
+    queryOptions({
+      queryKey: [...photoQueryOptions.all, "detail", id] as const,
+      queryFn: () => getPhotoDetail({ supabase, id }),
+    }),
+};

@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/react-router";
 
 import {
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -16,13 +17,7 @@ import Providers from "./providers";
 import { LoaderIcon } from "lucide-react";
 import { Toaster } from "./components/ui/sonner";
 import { koKR } from "@clerk/localizations";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "./components/ui/navigation-menu";
-import { ROUTE_LINK } from "./constant/route";
+import { Button } from "./components/ui/button";
 
 export async function loader(args: Route.LoaderArgs) {
   return rootAuthLoader(args);
@@ -237,15 +232,12 @@ export default function App({ loaderData }: Route.ComponentProps) {
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
-  let details = "An unexpected error occurred.";
+  let details: string | null = "An unexpected error occurred.";
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
+    message = error.status === 404 ? "Oops, Page Not Found" : "Error";
+    details = error.status === 404 ? null : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;
@@ -253,30 +245,13 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   return (
     <main className="pt-16 p-4 container mx-auto h-dvh flex flex-col justify-center items-center gap-2">
-      <h1 className="font-black text-5xl">{message}</h1>
+      <h1 className="font-black text-4xl md:text-5xl">{message}</h1>
       <p>{details}</p>
       <div className="mt-8 flex flex-col gap-2 items-center">
-        <p className="text-sm text-muted-foreground">
-          or you can go
-        </p>
-        <NavigationMenu viewport={false}>
-          <NavigationMenuList className="items-start gap-2">
-            {ROUTE_LINK.map((link, index) => (
-              <NavigationMenuItem key={index}>
-                <NavigationMenuLink href={link.href} className="py-1.5 text-base px-3 hover:underline underline-offset-2">
-                  {link.label}
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
+        <Button asChild className="rounded-full" size={"lg"}>
+          <Link to={"/"}>Back to Home</Link>
+        </Button>
       </div>
-
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
     </main>
   );
 }
