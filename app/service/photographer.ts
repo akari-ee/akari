@@ -11,7 +11,6 @@ export type PhotographerDetail = Photographer & {
 export type Photo = Database["public"]["Tables"]["photos"]["Row"];
 export type Collection = Database["public"]["Tables"]["collections"]["Row"];
 
-
 export const fetchPhotographerList = async (
   supabase: SupabaseClient
 ): Promise<Photographer[]> => {
@@ -46,6 +45,7 @@ export const fetchCollectionByPhotographer = async (
     .from("collections")
     .select("*")
     .eq("photographer_id", id)
+    .limit(5)
     .order("created_at", { ascending: false })
     .throwOnError();
 
@@ -60,6 +60,7 @@ export const fetchPhotoByPhotographer = async (
     .from("photos")
     .select("*")
     .eq("photographer_id", id)
+    .limit(5)
     .order("created_at", { ascending: false })
     .throwOnError();
 
@@ -75,12 +76,12 @@ export const photographerQueryOptions = {
     }),
   collection: (supabase: SupabaseClient, id: Photographer["id"]) =>
     queryOptions({
-      queryKey: ["collection", id],
+      queryKey: [...photographerQueryOptions.all, "collection", id],
       queryFn: () => fetchCollectionByPhotographer(supabase, id),
     }),
   photo: (supabase: SupabaseClient, id: Photographer["id"]) =>
     queryOptions({
-      queryKey: ["photo", id],
+      queryKey: [...photographerQueryOptions.all, "photo", id],
       queryFn: () => fetchPhotoByPhotographer(supabase, id),
     }),
 };

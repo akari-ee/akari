@@ -8,14 +8,11 @@ export default function PrevButton() {
   return (
     <Button
       size={"icon"}
-      variant={"secondary"}
+      variant={"ghost"}
       onClick={() => navigate(-1)}
       className="rounded-full shadow-none"
     >
-      <ChevronLeftIcon
-        className="text-default-500 size-4"
-        strokeWidth={1.5}
-      />
+      <ChevronLeftIcon className="text-default-500 size-8" strokeWidth={1.5} />
     </Button>
   );
 }
