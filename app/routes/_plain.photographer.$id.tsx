@@ -1,4 +1,4 @@
-import { data, Link } from "react-router";
+import { data } from "react-router";
 import type { Route } from "./+types/_plain.photographer.$id";
 import { createServerClient } from "~/lib/supabase-server";
 import { photographerQueryOptions } from "~/service/photographer";
@@ -11,12 +11,10 @@ import {
 import { ErrorBoundary, Suspense } from "@suspensive/react";
 import { SuspenseQuery } from "@suspensive/react-query";
 import { createBrowserClient } from "~/lib/supabase-client";
-import PrevButton from "~/components/shared/prev-button";
-import { SOCIAL_ICON_MAP } from "~/components/icons/icon-social";
-import { Button } from "~/components/ui/button";
 import ErrorBoundaryFallback from "~/components/shared/error-boundary-fallback";
-import { EllipsisIcon } from "lucide-react";
-import Carousel from "~/components/shared/carousel";
+import PhotographerProfile from "~/components/photographer/photographer-profile";
+import PhotographerCollection from "~/components/photographer/photographer-collection";
+import PhotographerPhoto from "~/components/photographer/photographer-photo";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const id = params.id;
@@ -72,45 +70,7 @@ export default function PhotographerDetailRoute({
                     {...photographerQueryOptions.info(supabase, id)}
                   >
                     {({ data: photographer }) => (
-                      <div className="flex flex-col items-center gap-4">
-                        <header className="mb-8 flex flex-row items-center w-full gap-3">
-                          <PrevButton />
-                          <h1 className="text-2xl font-semibold w-full">
-                            @{photographer?.name}
-                          </h1>
-                        </header>
-                        <div className="w-32 h-32">
-                          <img
-                            src={photographer?.url!}
-                            alt={photographer?.name}
-                            width={300}
-                            height={300}
-                            className="object-cover w-full h-full rounded-full"
-                          />
-                        </div>
-                        <aside className="flex flex-row gap-1 w-fit border rounded-lg p-1">
-                          {photographer?.social.map(({ id, platform, url }) => {
-                            const Icon = SOCIAL_ICON_MAP[platform];
-
-                            return (
-                              <Button
-                                key={id}
-                                asChild
-                                variant={"ghost"}
-                                size={"icon"}
-                              >
-                                <Link to={url}>
-                                  <Icon className="size-5" />
-                                </Link>
-                              </Button>
-                            );
-                          })}
-                        </aside>
-                        <article className="w-full space-y-2 border rounded-lg p-4">
-                          <h2 className="font-medium">작가의 말</h2>
-                          <p>{photographer?.introduction}</p>
-                        </article>
-                      </div>
+                      <PhotographerProfile photographer={photographer} />
                     )}
                   </SuspenseQuery>
                 </Suspense>
@@ -123,30 +83,7 @@ export default function PhotographerDetailRoute({
                       {...photographerQueryOptions.collection(supabase, id)}
                     >
                       {({ data: collection }) => (
-                        <div className="flex flex-col gap-3 flex-wrap">
-                          {collection.length > 0 ? (
-                            <>
-                              {collection.map((item) => (
-                                <div key={item.id} className="h-60 border">
-                                  {item.title}
-                                </div>
-                              ))}
-                              <div className="text-right">
-                                <Button
-                                  variant={"secondary"}
-                                  size={"lg"}
-                                  className="rounded-full shadow-none"
-                                >
-                                  더보기
-                                </Button>
-                              </div>
-                            </>
-                          ) : (
-                            <div className="text-muted-foreground">
-                              컬렉션이 없습니다.
-                            </div>
-                          )}
-                        </div>
+                        <PhotographerCollection collection={collection} />
                       )}
                     </SuspenseQuery>
                   </Suspense>
@@ -159,31 +96,7 @@ export default function PhotographerDetailRoute({
                     <SuspenseQuery
                       {...photographerQueryOptions.photo(supabase, id)}
                     >
-                      {({ data: photo }) => (
-                        <div>
-                          {photo.length > 0 ? (
-                            <>
-                              <Carousel items={photo} />
-                              <div className="flex justify-center items-center">
-                                <Button
-                                  asChild
-                                  variant={"secondary"}
-                                  size={"icon"}
-                                  className="rounded-full shadow-none"
-                                >
-                                  <Link to={"#"}>
-                                    <EllipsisIcon />
-                                  </Link>
-                                </Button>
-                              </div>
-                            </>
-                          ) : (
-                            <div className="text-muted-foreground">
-                              사진이 없습니다.
-                            </div>
-                          )}
-                        </div>
-                      )}
+                      {({ data: photo }) => <PhotographerPhoto photo={photo} />}
                     </SuspenseQuery>
                   </Suspense>
                 </section>
