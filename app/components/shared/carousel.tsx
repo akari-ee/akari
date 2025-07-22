@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import type { Photo } from "~/service/photographer";
+import type { BasePhoto } from "~/types/base";
 
-function Carousel({ items }: { items: Photo[] }) {
+function Carousel({ items }: { items: BasePhoto[] }) {
   const [width, setWidth] = useState(0);
   const carousel = useRef<HTMLDivElement | null>(null);
 
