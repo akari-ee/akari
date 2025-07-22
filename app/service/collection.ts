@@ -1,36 +1,23 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-// import { infiniteQueryOptions } from "@suspensive/react-query";
 import { infiniteQueryOptions } from "@tanstack/react-query";
-import type { Database } from "~/types/types_db";
-
-const PAGE_SIZE = 8;
-
-export type Collection = Database["public"]["Tables"]["collections"]["Row"];
-
-// 타입 분리: 컬렉션/포토/포토그래퍼 등 조합 타입
-export type CollectionWithRelations = Collection & {
-  photographer: Database["public"]["Tables"]["photographers"]["Row"];
-  thumbnail: Database["public"]["Tables"]["photos"]["Row"];
-  totalCount?: { count: number }[];
-};
-
-export type PhotoWithMetadata =
-  Database["public"]["Tables"]["photos"]["Row"] & {
-    metadata: Database["public"]["Tables"]["photo_metadata"]["Row"];
-  };
+import { DEFAULT_PAGE_SIZE } from "~/constant/service";
+import type {
+  CollectionWithRelation,
+  PhotoWithMetadata,
+} from "~/types/entities";
 
 export const fetchCollectionList = async (
   supabase: SupabaseClient,
   page: number
-): Promise<CollectionWithRelations[]> => {
+): Promise<CollectionWithRelation[]> => {
   const { data } = await supabase
     .from("collections")
     .select(
       `*, photographer:photographers(*), thumbnail:thumbnail_photo_id(*), totalCount:photos_collection_id_fkey(count)`
     )
     .order("created_at", { ascending: false })
-    .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1)
-    .overrideTypes<CollectionWithRelations[]>()
+    .range((page - 1) * DEFAULT_PAGE_SIZE, page * DEFAULT_PAGE_SIZE - 1)
+    .overrideTypes<CollectionWithRelation[]>()
     .throwOnError();
 
   return data;
@@ -40,7 +27,7 @@ export const fetchCollectionDetail = async (
   supabase: SupabaseClient,
   id: string
 ): Promise<{
-  collection: CollectionWithRelations | null;
+  collection: CollectionWithRelation | null;
   photos: PhotoWithMetadata[];
 }> => {
   const [collectionRes, photosRes] = await Promise.all([
@@ -48,7 +35,7 @@ export const fetchCollectionDetail = async (
       .from("collections")
       .select("*, photographer:photographers(*)")
       .eq("id", id)
-      .single<CollectionWithRelations>(),
+      .single<CollectionWithRelation>(),
     supabase
       .from("photos")
       .select("*, metadata:photo_metadata(*)")
@@ -73,7 +60,7 @@ export const collectionQueryOptions = {
         return lastPageParam + 1;
       },
       select: (data) =>
-        (data.pages.flat() as CollectionWithRelations[]).map((item) => ({
+        (data.pages.flat() as CollectionWithRelation[]).map((item) => ({
           ...item,
           totalCount: item.totalCount?.[0]?.count ?? 0,
         })),

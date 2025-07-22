@@ -1,22 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "~/types/types_db";
-import {
-  queryOptions,
-} from "@tanstack/react-query";
-
-// 타입 별도 선언
-export type Photo = Database["public"]["Tables"]["photos"]["Row"] & {
-  photographer: PhotoGraphers;
-};
-
-export type PhotoGraphers =
-  Database["public"]["Tables"]["photographers"]["Row"];
-
-export type PhotoDetail = Database["public"]["Tables"]["photos"]["Row"] & {
-  metadata: Database["public"]["Tables"]["photo_metadata"]["Row"];
-  photographer: PhotoGraphers;
-  collection: Database["public"]["Tables"]["collections"]["Row"];
-};
+import { queryOptions } from "@tanstack/react-query";
+import { DEFAULT_PAGE_SIZE } from "~/constant/service";
+import type { BasePhoto } from "~/types/base";
+import type { PhotoDetail } from "~/types/entities";
 
 export interface GetPhotoListParams {
   pageParam?: number;
@@ -29,10 +15,6 @@ export interface GetPhotoDetailParams {
   supabase: SupabaseClient;
 }
 
-// 기본값 상수
-const DEFAULT_PAGE_SIZE = 8;
-
-// 쿼리 함수 분리
 export async function getPhotoList({
   supabase,
   pageParam = 1,
@@ -42,7 +24,7 @@ export async function getPhotoList({
     .from("photos")
     .select("*, photographer:photographers(*)")
     .range((pageParam - 1) * pageSize, pageParam * pageSize - 1)
-    .overrideTypes<Photo[]>()
+    .overrideTypes<BasePhoto[]>()
     .throwOnError();
 
   return data;
@@ -66,7 +48,7 @@ export async function getPhotoDetail({
 
 export const photoQueryOptions = {
   all: ["photos"] as const,
-  detail: (supabase: SupabaseClient, id: Photo["id"]) =>
+  detail: (supabase: SupabaseClient, id: BasePhoto["id"]) =>
     queryOptions({
       queryKey: [...photoQueryOptions.all, "detail", id] as const,
       queryFn: () => getPhotoDetail({ supabase, id }),
