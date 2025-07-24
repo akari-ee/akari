@@ -2,7 +2,6 @@ import { Suspense } from "@suspensive/react";
 import { SuspenseInfiniteQuery } from "@suspensive/react-query";
 import { createBrowserClient } from "~/lib/supabase-client";
 import { collectionQueryOptions } from "~/service/collection";
-import type { Route } from "./+types/_feed.collection";
 import { createServerClient } from "~/lib/supabase-server";
 import {
   dehydrate,
@@ -11,6 +10,7 @@ import {
 } from "@tanstack/react-query";
 import { InView } from "@suspensive/react-dom";
 import { Link } from "react-router";
+import type { Route } from "./+types/_feed.collection";
 
 export async function loader() {
   const supabase = await createServerClient();
@@ -55,7 +55,7 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
                   {({ ref, isInView }) => (
                     <div ref={ref} className="h-60 border">
                       <Link
-                        to={`/collection/${item.id}`}
+                        to={`/collection/view/${item.id}`}
                         className="h-full block"
                       >
                         {isInView ? item.title : "Out of View"}
