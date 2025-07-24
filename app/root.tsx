@@ -202,7 +202,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
       //   },
       // }}
       appearance={{
-        // baseTheme: [dark],
         elements: {
           headerTitle: {
             fontSize: "22px",
@@ -212,6 +211,17 @@ export default function App({ loaderData }: Route.ComponentProps) {
             height: "0",
             visibility: "hidden",
           },
+          cardBox: {
+            boxShadow: "none",
+            borderWidth: "1px",
+          },
+          card: {
+            boxShadow: 'none',
+            borderRadius: '0'
+          },
+          formButtonPrimary: {
+
+          }
         },
         layout: {
           termsPageUrl: "https://clerk.com/terms",
