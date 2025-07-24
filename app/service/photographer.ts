@@ -1,7 +1,10 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { queryOptions } from "@tanstack/react-query";
 import type { BaseCollection, BasePhoto, BasePhotoGrapher } from "~/types/base";
-import type { PhotographerWithSocial } from "~/types/entities";
+import type {
+  CollectionWithRelation,
+  PhotographerWithSocial,
+} from "~/types/entities";
 
 export const fetchPhotographerList = async (
   supabase: SupabaseClient
@@ -32,12 +35,12 @@ export const fetchPhotographerInfo = async (
 export const fetchCollectionByPhotographer = async (
   supabase: SupabaseClient,
   id: BasePhotoGrapher["id"]
-): Promise<BaseCollection[]> => {
+): Promise<CollectionWithRelation[]> => {
   const { data } = await supabase
     .from("collections")
-    .select("*")
+    .select("*, thumbnail:thumbnail_photo_id(*)")
     .eq("photographer_id", id)
-    .limit(5)
+    .limit(2)
     .order("created_at", { ascending: false })
     .throwOnError();
 

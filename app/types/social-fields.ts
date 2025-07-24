@@ -1,45 +1,53 @@
 // socialFields.ts
 
 import {
-  IconBehance,
-  IconInstagram,
-  IconYoutube,
-  IconX,
-  IconWeb,
-} from "~/components/icons/icon-social";
+  BehanceLogoIcon,
+  InstagramLogoIcon,
+  SparkleIcon,
+  XLogoIcon,
+  YoutubeLogoIcon,
+} from "@phosphor-icons/react";
 
 export const SOCIAL_FIELDS = [
   {
     value: "behance",
     label: "Behance",
     placeholder: "Behance URL",
-    icon: IconBehance,
+    icon: BehanceLogoIcon,
   },
   {
     value: "instagram",
     label: "Instagram",
     placeholder: "Instagram URL",
-    icon: IconInstagram,
+    icon: InstagramLogoIcon,
   },
   {
     value: "youtube",
     label: "YouTube",
     placeholder: "YouTube URL",
-    icon: IconYoutube,
+    icon: YoutubeLogoIcon,
   },
   {
     value: "x",
     label: "X",
     placeholder: "X URL",
-    icon: IconX,
+    icon: XLogoIcon,
   },
   {
     value: "website",
     label: "Website",
     placeholder: "Website URL",
-    icon: IconWeb,
+    icon: SparkleIcon,
   },
 ] as const;
+
+export const SOCIAL_ICON_MAP = {
+  behance: { label: "Behance", icon: BehanceLogoIcon },
+  instagram: { label: "Instagram", icon: InstagramLogoIcon },
+  youtube: { label: "YouTube", icon: YoutubeLogoIcon },
+  x: { label: "X", icon: XLogoIcon },
+  website: { label: "Web", icon: SparkleIcon },
+} as const;
 
 export type SocialField = (typeof SOCIAL_FIELDS)[number];
 export type SocialFieldValue = SocialField["value"];
