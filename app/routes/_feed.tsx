@@ -9,7 +9,7 @@ export default function FeedLayout() {
     <div className="relative">
       <NavBar />
       <MobileMenu />
-      <aside className="px-4 sticky top-18 z-50 py-3 bg-background border-b border-divider md:hidden">
+      <aside className="px-4 sticky top-18 z-50 pb-3 bg-background border-b border-divider md:hidden">
         <SearchBar />
       </aside>
       <main className="px-6 flex-grow">

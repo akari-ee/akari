@@ -6,8 +6,7 @@ export default function MobileMenu() {
   return (
     <nav
       className={cn(
-        `sticky top-0 z-50 w-full flex justify-center bg-linear-to-b
-        from-background to-transparent p-4 md:hidden`
+        `sticky top-0 z-50 w-full flex justify-center bg-background p-4 md:hidden`
       )}
     >
       <menu
