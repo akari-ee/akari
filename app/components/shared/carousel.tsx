@@ -9,7 +9,7 @@ function Carousel({ items }: { items: BasePhoto[] }) {
   useEffect(() => {
     if (!carousel.current) return;
 
-    setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth + 50);
+    setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
   }, [carousel]);
 
   return (

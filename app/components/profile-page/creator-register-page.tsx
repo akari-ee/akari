@@ -95,20 +95,24 @@ export default function CreatorRegisterPage() {
                         control={form.control}
                         name={`socials.${value}`}
                         render={({ field }) => (
-                          <FormItem className="flex flex-row items-center">
-                            <FormLabel>
-                              <span className="flex items-center gap-2 hover:bg-accent p-2 rounded-lg transition-colors cursor-pointer">
-                                <Icon className="w-5 h-5" />
-                              </span>
-                            </FormLabel>
+                          <FormItem className="*:not-first:mt-2">
                             <FormControl>
-                              <Input
-                                placeholder={placeholder}
-                                {...field}
-                                value={field.value ?? ""}
-                                autoComplete="off"
-                                className="shadow-none"
-                              />
+                              <div className="relative">
+                                <Input
+                                  placeholder={placeholder}
+                                  {...field}
+                                  value={field.value ?? ""}
+                                  autoComplete="off"
+                                  className="shadow-none peer ps-10"
+                                />
+                                <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 pe-1.5 peer-disabled:opacity-50">
+                                  <Icon
+                                    className="w-5 h-5"
+                                    aria-hidden
+                                    weight="duotone"
+                                  />
+                                </div>
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>

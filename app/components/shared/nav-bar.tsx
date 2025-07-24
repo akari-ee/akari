@@ -4,14 +4,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "~/components/ui/navigation-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/ui/popover";
-import { Button } from "~/components/ui/button";
-
-import { ChevronDownIcon } from "lucide-react";
 import { useLocation } from "react-router";
 import SearchBar from "./search-bar";
 import { cn } from "~/lib/utils";
@@ -20,53 +12,30 @@ import { ROUTE_LINK } from "~/constant/route";
 
 export default function NavBar() {
   const { pathname } = useLocation();
-  const dropdownLabel = ROUTE_LINK.find(
-    (link) => link.href === pathname
-  )?.label;
 
   return (
-    <header className="px-4 md:px-6 sticky top-0 left-0 z-50 w-full bg-background">
+    <header className="px-4 md:px-6 sticky top-0 left-0 z-50 w-full bg-background transition-all duration-300">
       <div className="flex h-20 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2 shrink-0">
-          {/* Mobile menu trigger */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button className="group lg:hidden gap-4" variant="ghost">
-                <span>{dropdownLabel}</span>
-                <ChevronDownIcon />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-36 p-1 md:hidden">
-              <NavigationMenu className="max-w-none *:w-full">
-                <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {ROUTE_LINK.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink href={link.href} className="py-1.5">
-                        {link.label}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </PopoverContent>
-          </Popover>
-
+          <div className="text-2xl font-light font-josefin h-fit mt-1">
+            <span>AKARI</span>
+          </div>
           {/* Main nav */}
-          <div className="hidden lg:flex gap-4 justify-start ml-2">
+          <div className="hidden md:flex gap-4 justify-start ml-2">
             {/* Navigation menu */}
             <NavigationMenu>
               <NavigationMenuList className="gap-2">
-                {ROUTE_LINK.map((link, index) => (
+                {ROUTE_LINK.map(({ path, label }, index) => (
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
-                      href={link.href}
+                      href={path}
                       className={cn(
-                        "text-muted-foreground hover:text-primary py-1.5 font-medium",
-                        pathname === link.href ? "text-primary font-medium" : ""
+                        "text-muted-foreground hover:text-primary py-1.5 font-medium hover:bg-inherit",
+                        pathname === path ? "text-primary font-medium" : ""
                       )}
                     >
-                      {link.label}
+                      {label}
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
@@ -76,12 +45,12 @@ export default function NavBar() {
         </div>
 
         {/* Search Bar */}
-        <div className="hidden md:flex basis-1/5 md:basis-full md:justify-center">
+        <div className="hidden md:flex basis-1/5 md:basis-full justify-center">
           <SearchBar />
         </div>
 
         {/* Right side, Auth & Theme */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 lg:min-w-80 lg:justify-end">
           <AuthProfile />
         </div>
       </div>
