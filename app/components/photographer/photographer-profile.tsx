@@ -2,7 +2,7 @@ import PrevButton from "../shared/prev-button";
 import { Link } from "react-router";
 import type { PhotographerWithSocial } from "~/types/entities";
 import { Button } from "../ui/button";
-import { SOCIAL_FIELDS, SOCIAL_ICON_MAP } from "~/types/social-fields";
+import { SOCIAL_ICON_MAP } from "~/types/social-fields";
 import { cn } from "~/lib/utils";
 
 export default function PhotographerProfile({
@@ -16,7 +16,7 @@ export default function PhotographerProfile({
         <PrevButton />
         <h1 className="text-2xl font-semibold w-full">@{photographer?.name}</h1>
       </header>
-      <div className="flex w-full gap-8 mb-6">
+      <div className="flex w-full gap-8 mb-6 justify-between">
         <div className="w-32 h-32 md:w-44 md:h-44 rounded-full shrink-0">
           <img
             src={photographer?.url!}
@@ -38,13 +38,13 @@ export default function PhotographerProfile({
               const { icon: Icon, label } = SOCIAL_ICON_MAP[platform];
 
               return (
-                <Button asChild variant={"ghost"}>
+                <Button asChild variant={"ghost"} key={id} size={"icon"}>
                   <Link
                     to={url}
                     className={cn(
                       "flex gap-1 rounded-lg border px-3 py-1 transition-colors active:inset-shadow-xs sm:text-sm",
                       "border-muted text-muted-foreground max-sm:px-2 hover:border-neutral-200 bg-neutral-50",
-                      
+                      "sm:w-fit"
                     )}
                   >
                     <Icon className="size-6 sm:size-5" weight="duotone" />

@@ -24,11 +24,11 @@ function Carousel({ items }: { items: BasePhoto[] }) {
         transition={{ duration: 0.2, ease: "easeInOut" }}
         className="flex will-change-transform cursor-grab active:cursor-grabbing"
       >
-        {items.map((item, index) => {
+        {items.map(({ url, id }, index) => {
           return (
-            <motion.div className="min-w-[20rem] min-h-[25rem] p-2">
+            <motion.div key={id} className="min-w-[20rem] min-h-[25rem] p-2">
               <img
-                src={item.url}
+                src={url}
                 width={400}
                 height={400}
                 alt="img"

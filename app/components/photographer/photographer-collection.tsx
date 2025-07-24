@@ -14,20 +14,17 @@ export default function PhotographerCollection({
       {collection.length > 0 ? (
         <div className="relative">
           <div className="flex flex-col gap-3">
-            {collection.map((item) => (
-              <div className="relative rounded-lg">
+            {collection.map(({ id, thumbnail, title }) => (
+              <div className="relative rounded-lg" key={id}>
                 <div className="overflow-hidden rounded-lg">
                   <img
-                    src={item.thumbnail.url}
-                    alt={item.title}
+                    src={thumbnail.url}
+                    alt={title}
                     className="h-60 object-cover w-full"
                   />
                 </div>
-                <div
-                  key={item.id}
-                  className="absolute bottom-0 font-black text-xl"
-                >
-                  {item.title}
+                <div key={id} className="absolute bottom-0 font-black text-xl">
+                  {title}
                 </div>
               </div>
             ))}
