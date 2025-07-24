@@ -68,6 +68,11 @@ export default function PhotographerDetailRoute({
                 <Suspense fallback={<div>작가 정보 로딩</div>}>
                   <SuspenseQuery
                     {...photographerQueryOptions.info(supabase, id)}
+                    select={(data) => ({
+                      ...data,
+                      introduction:
+                        data.introduction?.replace(/\\n/g, "") || "",
+                    })}
                   >
                     {({ data: photographer }) => (
                       <PhotographerProfile photographer={photographer} />
