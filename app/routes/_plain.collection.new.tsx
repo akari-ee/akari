@@ -13,7 +13,7 @@ import { useCollectionForm } from "~/hooks/use-collection-form";
 import { FILE_CONSTRAINTS } from "~/constant/validation-message";
 import PcCarousel from "~/components/pc-carousel";
 import DragDropRoll from "~/components/drag-drop-roll";
-import { useUpload } from "~/hooks/use-upload";
+import { useImageManager } from "~/hooks/use-image-manager";
 
 export default function CollectionNewRoute() {
   const { form, onSubmit } = useCollectionForm();
@@ -25,7 +25,7 @@ export default function CollectionNewRoute() {
     handleAddImage,
     handleRemove,
     currentImageCount,
-  } = useUpload(form);
+  } = useImageManager(form);
 
   return (
     <main className="flex flex-col flex-grow max-w-5xl container mx-auto py-8 px-4 h-full">

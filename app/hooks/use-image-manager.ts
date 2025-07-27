@@ -3,7 +3,7 @@ import { useFieldArray } from "react-hook-form";
 import { FILE_CONSTRAINTS } from "~/constant/validation-message";
 import type { CollectionFormType } from "./use-collection-form";
 
-export const useUpload = (form: CollectionFormType) => {
+export const useImageManager = (form: CollectionFormType) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewList, setPreviewList] = useState<string[] | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number | null>(
