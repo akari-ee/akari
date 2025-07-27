@@ -75,6 +75,27 @@ export function useCollectionForm() {
     mode: "onChange",
   });
 
+  const onUpload = async (file: File | Blob) => {
+    const formData = new FormData();
+    formData.append("file", file, (file as File).name);
+
+    const res = await fetch("/upload", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_UPLOAD_TOKEN}`,
+      },
+    });
+
+    if (!res.ok) {
+      console.log(res);
+      throw new Error("Upload Failed!");
+    }
+
+    const json = await res.json();
+    console.log("Uploaded:", json);
+  };
+
   const onSubmit = async (values: CollectionFormValues) => {
     console.log(values);
   };
