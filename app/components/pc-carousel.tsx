@@ -8,14 +8,19 @@ import {
   type CarouselApi,
 } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "./ui/button";
+import { PlusIcon, SlideshowIcon, XIcon } from "@phosphor-icons/react";
 
 interface PcCarouselProps {
   images: string[];
+  maxImageCount: number;
 }
 
 export default function PcCarousel({
   images,
   height = "400px",
+  maxImageCount,
 }: PcCarouselProps & { height?: string }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -37,20 +42,112 @@ export default function PcCarousel({
         </div>
       </div>
 
-      {/* 임시 데이터 캐러셀 */}
+      {/* 이미지 핸들 팝오버(제거, 추가, 순서 변경) */}
+      <div className="absolute bottom-2 right-2 z-10">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              size={"icon"}
+              className="bg-black/70 rounded-full hover:bg-black/80"
+            >
+              <SlideshowIcon className="size-5" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            side="top"
+            align="end"
+            sideOffset={12}
+            className="shadow-none border-0 bg-black/70 text-white p-3 overflow-hidden h-36 max-w-dvw flex flex-row items-center w-fit"
+          >
+            <Carousel
+              opts={{
+                align: "start",
+              }}
+              className="w-full h-full"
+            >
+              <CarouselContent className="-ml-3">
+                {images.map((image, index) => (
+                  <CarouselItem
+                    key={image}
+                    className="pl-3 relative h-30"
+                    style={{
+                      flexBasis: `${100 / Math.min(images.length, maxImageCount)}%`,
+                    }}
+                  >
+                    <div
+                      className={cn(
+                        "flex aspect-square items-center justify-center cursor-pointer transition-colors h-30",
+                        current === index
+                          ? "border-white"
+                          : "border-transparent hover:border-gray-400"
+                      )}
+                      onClick={() => {
+                        if (api) {
+                          api.scrollTo(index);
+                        }
+                      }}
+                    >
+                      <img
+                        src={image}
+                        alt={`Thumbnail ${index + 1}`}
+                        className={cn(
+                          "object-cover w-full h-full",
+                          current !== index && "brightness-75"
+                        )}
+                      />
+                    </div>
+                    {/* 이미지 삭제 */}
+                    <Button
+                      className={cn(
+                        "hidden absolute top-1 right-1 rounded-full size-5 bg-black/80",
+                        current === index && "inline-flex"
+                      )}
+                      size={"icon"}
+                    >
+                      <XIcon className="size-3.5" />
+                    </Button>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+
+            {/* 캐러셀 위치 이동 버튼 */}
+            {images.length > maxImageCount && (
+              <>
+                <CarouselPrevious className="left-0 -translate-x-1/2 border-none text-black hover:text-black bg-white/80 hover:bg-white" />
+                <CarouselNext className="right-0 translate-x-1/2 border-none text-black hover:text-black bg-white/80 hover:bg-white" />
+              </>
+            )}
+
+            {/* 이미지 추가 버튼 */}
+            {images.length < maxImageCount && (
+              <div className="pl-4">
+                <Button
+                  size={"icon"}
+                  variant={"outline"}
+                  className="rounded-full bg-transparent hover:bg-transparent hover:text-inherit size-8"
+                >
+                  <PlusIcon className="size-5" />
+                </Button>
+              </div>
+            )}
+          </PopoverContent>
+        </Popover>
+      </div>
+
       <Carousel setApi={setApi} className="h-full w-full">
         <CarouselContent className="h-full">
-          {images.map((image, i) => (
-            <CarouselItem key={i} style={{ height }}>
+          {images.map((image) => (
+            <CarouselItem key={image} style={{ height }}>
               <div
                 className="flex items-center justify-center"
                 style={{ height }}
               >
                 <img
                   src={image}
-                  alt={`이미지 ${i}`}
+                  alt={image}
                   className="object-contain"
-                  style={{ maxHeight: height, maxWidth: '100%' }}
+                  style={{ maxHeight: height, maxWidth: "100%" }}
                 />
               </div>
             </CarouselItem>
