@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 import { z } from "zod/v4";
 
 import {
@@ -24,7 +24,7 @@ export const collectionSchema = z.object({
     .trim()
     .min(1, { message: COLLECTION_VALIDATION_MESSAGES.CONTENT.REQUIRED }),
 
-  isThumbnailCheck: z.boolean({
+  thumbnailId: z.number({
     message: COLLECTION_VALIDATION_MESSAGES.THUMBNAIL.REQUIRED,
   }),
   images: z
@@ -60,6 +60,7 @@ export type CollectionValidationMessageKeys =
 export type CommonValidationMessageKeys =
   keyof typeof COMMON_VALIDATION_MESSAGES;
 export type CollectionFormValues = z.infer<typeof collectionSchema>;
+export type CollectionFormType = UseFormReturn<CollectionFormValues>;
 
 export function useCollectionForm() {
   const form = useForm<CollectionFormValues>({
@@ -68,6 +69,7 @@ export function useCollectionForm() {
       title: "",
       description: "",
       content: "",
+      thumbnailId: 0,
       images: [],
     },
     mode: "onChange",
