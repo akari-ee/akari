@@ -3,6 +3,7 @@ import { useFieldArray } from "react-hook-form";
 import { FILE_CONSTRAINTS } from "~/constant/validation-message";
 import type { CollectionFormType } from "./use-collection-form";
 import { arrayMove } from "@dnd-kit/sortable";
+import type { CarouselApi } from "~/components/ui/carousel";
 
 export const useImageManager = (form: CollectionFormType) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -10,6 +11,7 @@ export const useImageManager = (form: CollectionFormType) => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number | null>(
     null
   );
+  const [api, setApi] = useState<CarouselApi>();
 
   const { fields, append, remove, move } = useFieldArray({
     control: form.control,
@@ -37,6 +39,13 @@ export const useImageManager = (form: CollectionFormType) => {
     }
     // 그 외에는 변화 없음
     return prevIndex;
+  };
+
+  const handleClickPreview = (image: string, index: number) => {
+    if (api && previewList) {
+      api.scrollTo(previewList.indexOf(image));
+    }
+    handleChangeCurrentImage(index);
   };
 
   const handleReorder = useCallback(
@@ -138,6 +147,20 @@ export const useImageManager = (form: CollectionFormType) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!api) return;
+    handleChangeCurrentImage(api.selectedScrollSnap());
+    api.on("select", () => {
+      handleChangeCurrentImage(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  useEffect(() => {
+    if (api && typeof currentImageIndex === "number") {
+      api.scrollTo(currentImageIndex);
+    }
+  }, [currentImageIndex, api]);
+
   return {
     fileInputRef,
     previewList,
@@ -146,6 +169,8 @@ export const useImageManager = (form: CollectionFormType) => {
     handleAddImage,
     handleRemove,
     handleReorder,
+    handleClickPreview,
+    setApi,
     currentImageCount: fields.length,
   };
 };
