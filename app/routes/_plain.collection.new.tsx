@@ -24,6 +24,7 @@ export default function CollectionNewRoute() {
     handleChangeCurrentImage,
     handleAddImage,
     handleRemove,
+    handleReorder,
     currentImageCount,
   } = useImageManager(form);
 
@@ -79,8 +80,11 @@ export default function CollectionNewRoute() {
               height="600px"
               maxImageCount={FILE_CONSTRAINTS.IMAGE.MAX_COUNT}
               currentIndex={currentImageIndex}
+              currentImageCount={currentImageCount}
               onRemove={handleRemove}
               onSelect={handleChangeCurrentImage}
+              onReorder={handleReorder}
+              onClickFileRef={() => fileInputRef.current?.click()}
             />
           )}
 

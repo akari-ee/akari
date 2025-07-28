@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { FILE_CONSTRAINTS } from "~/constant/validation-message";
 import type { CollectionFormType } from "./use-collection-form";
+import { arrayMove } from "@dnd-kit/sortable";
 
 export const useImageManager = (form: CollectionFormType) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -10,11 +11,53 @@ export const useImageManager = (form: CollectionFormType) => {
     null
   );
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, move } = useFieldArray({
     control: form.control,
     name: "images",
     shouldUnregister: true,
   });
+
+  const getNextSelectedIndex = (
+    prevIndex: number | null,
+    oldIndex: number,
+    newIndex: number
+  ): number | null => {
+    if (prevIndex === null) return null;
+    if (prevIndex === oldIndex) {
+      // 선택된 아이템이 이동했다면, 새 위치로
+      return newIndex;
+    }
+    if (oldIndex < prevIndex && newIndex >= prevIndex) {
+      // 선택된 인덱스가 이동한 아이템 뒤에 있고, 앞으로 당겨졌다면 -1
+      return prevIndex - 1;
+    }
+    if (oldIndex > prevIndex && newIndex <= prevIndex) {
+      // 선택된 인덱스가 이동한 아이템 앞에 있고, 뒤로 밀렸다면 +1
+      return prevIndex + 1;
+    }
+    // 그 외에는 변화 없음
+    return prevIndex;
+  };
+
+  const handleReorder = useCallback(
+    (oldIndex: number, newIndex: number) => {
+      if (!previewList || oldIndex === newIndex) return;
+
+      // react-hook-form 필드 순서 변경
+      move(oldIndex, newIndex);
+
+      // 미리보기 리스트 순서 변경
+      setPreviewList((prev) =>
+        prev ? arrayMove(prev, oldIndex, newIndex) : prev
+      );
+
+      // 선택 인덱스 갱신
+      setCurrentImageIndex((prev) =>
+        getNextSelectedIndex(prev, oldIndex, newIndex)
+      );
+    },
+    [move, setPreviewList, setCurrentImageIndex, previewList]
+  );
 
   const handleChangeCurrentImage = (index: number) => {
     setCurrentImageIndex(index);
@@ -102,6 +145,7 @@ export const useImageManager = (form: CollectionFormType) => {
     handleChangeCurrentImage,
     handleAddImage,
     handleRemove,
+    handleReorder,
     currentImageCount: fields.length,
   };
 };
