@@ -1,95 +1,26 @@
 import { Button } from "~/components/ui/button";
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
 import { useCollectionForm } from "~/hooks/use-collection-form";
-import { FILE_CONSTRAINTS } from "~/constant/validation-message";
-import PcCarousel from "~/components/pc-carousel";
-import DragDropRoll from "~/components/drag-drop-roll";
-import { useImageManager } from "~/hooks/use-image-manager";
+import { ImageManagerProvider } from "./image-manager-context";
+import ImageUploadStep from "~/components/image-upload-step";
 
 export default function CollectionNewRoute() {
   const { form, onSubmit } = useCollectionForm();
-  const {
-    fileInputRef,
-    previewList,
-    currentImageIndex,
-    handleChangeCurrentImage,
-    handleAddImage,
-    handleRemove,
-    handleReorder,
-    currentImageCount,
-  } = useImageManager(form);
 
   return (
-    <main className="flex flex-col flex-grow max-w-5xl container mx-auto py-8 px-4 h-full">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-8"
-        >
-          {/* 이미지 업로드 */}
-          <FormField
-            control={form.control}
-            name="images"
-            render={() => {
-              return (
-                <FormItem hidden>
-                  <FormLabel>
-                    이미지 업로드 (최대 {FILE_CONSTRAINTS.IMAGE.MAX_COUNT}개)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/jpeg,image/png,image/jpg,image/webp,image/heic,image/heif,image/avif"
-                      multiple
-                      onChange={handleAddImage}
-                      disabled={
-                        currentImageCount >= FILE_CONSTRAINTS.IMAGE.MAX_COUNT
-                      }
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    JPEG, PNG, JPG, WebP 형식만 지원. 최대{" "}
-                    {FILE_CONSTRAINTS.IMAGE.MAX_COUNT}개
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
+    <ImageManagerProvider form={form}>
+      <main className="flex flex-col flex-grow max-w-5xl container mx-auto py-8 px-4 h-full">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-8"
+          >
+            <ImageUploadStep form={form} />
 
-          <DragDropRoll
-            onClick={() => fileInputRef.current?.click()}
-            onChange={handleAddImage}
-            currentImageCount={currentImageCount}
-            maxImageCount={FILE_CONSTRAINTS.IMAGE.MAX_COUNT}
-          />
-
-          {previewList && currentImageIndex !== null && (
-            <PcCarousel
-              images={previewList}
-              height="600px"
-              maxImageCount={FILE_CONSTRAINTS.IMAGE.MAX_COUNT}
-              currentIndex={currentImageIndex}
-              currentImageCount={currentImageCount}
-              onRemove={handleRemove}
-              onSelect={handleChangeCurrentImage}
-              onReorder={handleReorder}
-              onClickFileRef={() => fileInputRef.current?.click()}
-            />
-          )}
-
-          {/* 메타데이터 - 이미지가 있을 때만 표시 */}
-          {/* {fields.length > 0 && (
+            {/* 메타데이터 - 이미지가 있을 때만 표시 */}
+            {/* {fields.length > 0 && (
             <section className="space-y-4">
               <div className="flex items-center gap-4">
                 <FormLabel>메타데이터</FormLabel>
@@ -213,8 +144,8 @@ export default function CollectionNewRoute() {
             </section>
           )} */}
 
-          {/* 제목 */}
-          {/* <FormField
+            {/* 제목 */}
+            {/* <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
@@ -232,8 +163,8 @@ export default function CollectionNewRoute() {
             )}
           /> */}
 
-          {/* 설명 */}
-          {/* <FormField
+            {/* 설명 */}
+            {/* <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
@@ -247,8 +178,8 @@ export default function CollectionNewRoute() {
             )}
           /> */}
 
-          {/* 내용 */}
-          {/* <FormField
+            {/* 내용 */}
+            {/* <FormField
             control={form.control}
             name="content"
             render={({ field }) => (
@@ -262,9 +193,10 @@ export default function CollectionNewRoute() {
             )}
           /> */}
 
-          <Button type="submit">제출</Button>
-        </form>
-      </Form>
-    </main>
+            <Button type="submit">제출</Button>
+          </form>
+        </Form>
+      </main>
+    </ImageManagerProvider>
   );
 }
