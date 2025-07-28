@@ -193,7 +193,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <CaretLeftIcon weight="bold" className="size-5" />
+      <CaretLeftIcon className="size-5" />
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -223,7 +223,7 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <CaretRightIcon weight="bold" className="size-5" />
+      <CaretRightIcon className="size-5" />
       <span className="sr-only">Next slide</span>
     </Button>
   );
