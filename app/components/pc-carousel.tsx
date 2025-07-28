@@ -82,12 +82,14 @@ export default function PcCarousel({
             "left-4 bg-black/70 text-white hover:bg-black/80 hover:text-white border-none",
             currentIndex === 0 && "hidden"
           )}
+          type="button"
         />
         <CarouselNext
           className={cn(
             "right-4 bg-black/70 text-white hover:bg-black/80 hover:text-white border-none",
             currentIndex === images.length - 1 && "hidden"
           )}
+          type="button"
         />
       </Carousel>
     </div>

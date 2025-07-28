@@ -9,9 +9,9 @@ import {
 import { Input } from "~/components/ui/input";
 import { FILE_CONSTRAINTS } from "~/constant/validation-message";
 import DragDropRoll from "~/components/drag-drop-roll";
-import MobileCarousel from "~/components/mobile-carousel";
 import type { CollectionFormType } from "~/hooks/use-collection-form";
 import { useImageManager } from "~/routes/image-manager-context";
+import PcCarousel from "./pc-carousel";
 
 export default function ImageUploadStep({
   form,
@@ -70,7 +70,7 @@ export default function ImageUploadStep({
       />
 
       {previewList && currentImageIndex !== null && (
-        <MobileCarousel
+        <PcCarousel
           images={previewList}
           height="600px"
           maxImageCount={FILE_CONSTRAINTS.IMAGE.MAX_COUNT}
