@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@clerk/themes/shadcn.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -56,9 +57,10 @@ body {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* oklch(0.9674 0.0029 84.56); */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.985 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -140,4 +142,13 @@ body {
 
 @utility offset-border {
   @apply ring ring-border ring-offset-2 ring-offset-background;
+}
+
+.cl-cardBox {
+  box-shadow: none;
+  border: none;
+}
+
+.cl-internal-1dauvpw {
+  border: none;
 }

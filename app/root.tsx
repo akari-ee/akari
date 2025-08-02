@@ -18,6 +18,7 @@ import { LoaderIcon } from "lucide-react";
 import { Toaster } from "./components/ui/sonner";
 import { koKR } from "@clerk/localizations";
 import { Button } from "./components/ui/button";
+import { shadcn } from "@clerk/themes";
 
 export async function loader(args: Route.LoaderArgs) {
   return rootAuthLoader(args);
@@ -202,6 +203,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
       //   },
       // }}
       appearance={{
+        baseTheme: shadcn,
         elements: {
           headerTitle: {
             fontSize: "22px",
@@ -214,22 +216,71 @@ export default function App({ loaderData }: Route.ComponentProps) {
           cardBox: {
             boxShadow: "none",
             borderWidth: "1px",
+            border: "none",
+            borderStyle: "none",
           },
           card: {
-            boxShadow: 'none',
-            borderRadius: '0'
+            boxShadow: "none",
+            borderRadius: "0",
+            borderStyle: "none",
           },
           formButtonPrimary: {
-
-          }
+            padding: "8px",
+            borderRadius: "24px",
+          },
+          footer: {
+            backgroundColor: "white",
+          },
+          footerAction: {
+            backgroundColor: "white",
+            margin: "0 0",
+          },
+          formFieldLabelRow__identifier: {},
+          formFieldLabel__identifier: {},
+          formFieldInput__identifier: {
+            padding: "18px",
+            borderRadius: "24px",
+          },
+          formFieldLabelRow__password: {},
+          formFieldLabel__password: {},
+          formFieldInput__password: {
+            padding: "18px",
+            borderRadius: "24px",
+          },
+          formFieldInput__username: {
+            padding: "18px",
+            borderRadius: "24px",
+          },
+          formFieldInput__emailAddress: {
+            padding: "18px",
+            borderRadius: "24px",
+          },
+          formFieldInput__newPassword: {
+            padding: "18px",
+            borderRadius: "24px",
+          },
+          formFieldInput__confirmPassword: {
+            padding: "18px",
+            borderRadius: "24px",
+          },
+          socialButtonsIconButton: {
+            borderRadius: "24px",
+            boxShadow: "none",
+          },
         },
         layout: {
           termsPageUrl: "https://clerk.com/terms",
           unsafe_disableDevelopmentModeWarnings: true,
+          socialButtonsPlacement: "bottom",
+          socialButtonsVariant: "iconButton",
+          logoPlacement: "outside",
         },
         captcha: {
           size: "flexible",
           language: "ko-KR",
+        },
+        variables: {
+          colorBackground: "white",
         },
       }}
     >
