@@ -50,14 +50,16 @@ export default function NavBar() {
           <SearchBar />
         </div>
 
-        {/* Auth */}
-        <div className="flex items-center gap-4 lg:min-w-80 lg:justify-end">
-          <UserButton />
-        </div>
+        <div className="flex items-center gap-2">
+          {/* Auth */}
+          <div className="flex items-center gap-4 lg:min-w-80 lg:justify-end">
+            <UserButton />
+          </div>
 
-        {/* Mobile Side Menu */}
-        <div className="flex md:hidden">
-          <MobileSideMenu />
+          {/* Mobile Side Menu */}
+          <div className="flex md:hidden">
+            <MobileSideMenu />
+          </div>
         </div>
       </div>
     </header>

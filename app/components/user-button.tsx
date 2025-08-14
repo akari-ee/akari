@@ -30,7 +30,29 @@ export default function UserButton() {
       </ClerkLoading>
     );
 
-  if (!user?.id) return null;
+  if (!user?.id)
+    return (
+      <aside className="hidden md:flex items-center gap-2 md:gap-4">
+        <SignInButton>
+          <Button
+            size={"sm"}
+            variant={"ghost"}
+            className="rounded-full px-4 py-5"
+          >
+            로그인
+          </Button>
+        </SignInButton>
+        <SignUpButton>
+          <Button
+            size={"sm"}
+            variant={"default"}
+            className="rounded-full py-5 px-4"
+          >
+            회원가입
+          </Button>
+        </SignUpButton>
+      </aside>
+    );
 
   return (
     <DropdownMenu>
