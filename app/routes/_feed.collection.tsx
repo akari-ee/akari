@@ -11,7 +11,6 @@ import {
 import { InView } from "@suspensive/react-dom";
 import { Link } from "react-router";
 import type { Route } from "./+types/_feed.collection";
-import MasonryGrid from "~/components/shared/masonry-grid";
 
 export async function loader() {
   const supabase = await createServerClient();
@@ -47,33 +46,31 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
           <SuspenseInfiniteQuery {...collectionQueryOptions.list(supabase, 1)}>
             {({ data, fetchNextPage, hasNextPage, isFetchingNextPage }) => (
               <>
-                <MasonryGrid items={data}>
-                  {(item) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6 w-full">
+                  {data.map((item) => (
                     <Link
+                      key={item.id}
                       to={`/collection/view/${item.id}`}
-                      className="block break-inside-avoid rounded-md overflow-hidden mb-4 md:mb-6"
+                      className="block rounded-md overflow-hidden"
                     >
                       <div
                         className="w-full h-auto"
                         style={{
-                          backgroundColor: item.thumbnail?.avg_color ?? "#f2f2f2",
-                          aspectRatio:
-                            item.thumbnail?.width && item.thumbnail?.height
-                              ? `${item.thumbnail.width} / ${item.thumbnail.height}`
-                              : "3 / 2",
+                          backgroundColor:
+                            item.thumbnail?.avg_color ?? "#f2f2f2",
+                          aspectRatio: "1 / 1",
                         }}
                       >
                         <img
                           src={item.thumbnail?.url}
                           alt={item.title}
-                          loading="lazy"
-                          className="w-full h-full object-cover block"
+                          className="w-full h-full object-cover object-center block"
                         />
                       </div>
                     </Link>
-                  )}
-                </MasonryGrid>
-                {hasNextPage ? (
+                  ))}
+                </div>
+                {hasNextPage && (
                   <InView
                     onChange={(inView) => {
                       if (inView && !isFetchingNextPage) {
@@ -81,7 +78,7 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
                       }
                     }}
                     rootMargin="300px 0px"
-                    threshold={0}
+                    threshold={0.7}
                   >
                     {({ ref }) => (
                       <div
@@ -94,10 +91,6 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
                       </div>
                     )}
                   </InView>
-                ) : (
-                  <div className="py-4 text-sm text-muted-foreground">
-                    더 이상 항목이 없습니다
-                  </div>
                 )}
               </>
             )}

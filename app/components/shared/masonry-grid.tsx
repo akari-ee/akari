@@ -10,7 +10,7 @@ export default function MasonryGrid<T extends { id?: string | number }>({
   children,
 }: MasonryGridProps<T>) {
   return (
-    <div className="columns-2 md:columns-3 xl:columns-5 gap-6 space-y-4">
+    <div>
       {items.map((item, idx) =>
         React.cloneElement(children(item, idx) as React.ReactElement, {
           key: item.id ?? idx,
