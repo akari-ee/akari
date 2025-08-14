@@ -57,7 +57,9 @@ export const collectionQueryOptions = {
       queryFn: ({ pageParam = 1 }) => fetchCollectionList(supabase, pageParam),
       initialPageParam: 1,
       getNextPageParam: (lastPage, pages, lastPageParam) => {
-        return lastPageParam + 1;
+        // 더 이상 불러올 데이터가 없으면 undefined를 반환하여 hasNextPage를 false로 설정
+        const hasMore = Array.isArray(lastPage) && lastPage.length >= DEFAULT_PAGE_SIZE;
+        return hasMore ? lastPageParam + 1 : undefined;
       },
       select: (data) =>
         (data.pages.flat() as CollectionWithRelation[]).map((item) => ({
