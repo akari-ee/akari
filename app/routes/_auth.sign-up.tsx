@@ -6,6 +6,7 @@ export default function SignUpPage() {
       <SignUp
         unsafeMetadata={{
           isCreator: false,
+          creatorName: null,
         }}
       />
     </main>

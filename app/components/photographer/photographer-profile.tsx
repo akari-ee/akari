@@ -1,9 +1,9 @@
-import PrevButton from "../shared/prev-button";
 import { Link } from "react-router";
 import type { PhotographerWithSocial } from "~/types/entities";
 import { Button } from "../ui/button";
 import { SOCIAL_ICON_MAP } from "~/types/social-fields";
 import { cn } from "~/lib/utils";
+import PhotographerSettingButton from "../photographer-setting-button";
 
 export default function PhotographerProfile({
   photographer,
@@ -12,27 +12,33 @@ export default function PhotographerProfile({
 }) {
   return (
     <div className="flex flex-col items-center gap-4">
-      <header className="mb-8 flex flex-row items-center w-full gap-3">
-        <PrevButton />
-        <h1 className="text-2xl font-semibold w-full">@{photographer?.name}</h1>
-      </header>
-      <div className="flex w-full gap-8 mb-6 justify-between">
-        <div className="w-32 h-32 md:w-44 md:h-44 rounded-full shrink-0">
-          <img
-            src={photographer?.url!}
-            alt={photographer?.name}
-            width={300}
-            height={300}
-            className="object-cover w-full h-full rounded-full"
-          />
+      <div className="flex w-full gap-4 justify-between flex-col">
+        <div className="flex flex-row justify-between gap-4 items-center">
+          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full shrink-0">
+            <img
+              src={photographer?.url!}
+              alt={photographer?.name}
+              width={120}
+              height={120}
+              className="object-cover w-full h-full rounded-full"
+            />
+          </div>
+          <aside>
+            <PhotographerSettingButton id={photographer.id} />
+            <Link
+              to={`/setting/${photographer.id}/profile`}
+              className="text-sm underline underline-offset-2 hidden lg:flex"
+            >
+              설정
+            </Link>
+          </aside>
         </div>
-        <div className="flex flex-col justify-between">
-          <h1 className="text-2xl font-semibold w-full">
-            @{photographer?.name}
-          </h1>
+
+        <div className="flex flex-row justify-between gap-4 items-center">
+          <h1 className="text-2xl font-medium w-full">@{photographer?.name}</h1>
           <menu
-            className="flex items-center gap-1 rounded-xl border
-          bg-background/75 p-1 backdrop-blur-xl h-fit"
+            className="flex items-center gap-1 rounded-xl
+          bg-background/75 p-1 backdrop-blur-xl h-fit w-fit"
           >
             {photographer?.social.map(({ url, platform, id }) => {
               const { icon: Icon, label } = SOCIAL_ICON_MAP[platform];
@@ -42,13 +48,11 @@ export default function PhotographerProfile({
                   <Link
                     to={url}
                     className={cn(
-                      "flex gap-1 rounded-lg border px-3 py-1 transition-colors active:inset-shadow-xs sm:text-sm",
-                      "border-muted text-muted-foreground max-sm:px-2 hover:border-neutral-200 bg-neutral-50",
-                      "sm:w-fit"
+                      "flex gap-1 rounded-lg px-3 py-1 transition-colors active:inset-shadow-xs",
+                      "border-muted text-muted-foreground max-sm:px-2 hover:border-neutral-200 bg-neutral-50"
                     )}
                   >
-                    <Icon className="size-6 sm:size-5" weight="duotone" />
-                    <span className="hidden sm:block">{label}</span>
+                    <Icon className="size-5" weight="fill" />
                   </Link>
                 </Button>
               );
@@ -56,9 +60,9 @@ export default function PhotographerProfile({
           </menu>
         </div>
       </div>
-      <article className="w-full flex items-center my-8">
+      <article className="w-full flex items-center">
         <div className="rounded-xl w-full">
-          <p className="text-gray-800 whitespace-pre-line leading-relaxed text-base sm:text-lg md:text-lg">
+          <p className="text-gray-800 whitespace-pre-line leading-relaxed text-base">
             {photographer?.introduction}
           </p>
         </div>

@@ -6,7 +6,7 @@ import { SOCIAL_FIELDS } from "~/types/social-fields";
 
 type PlatformEnum = (typeof SOCIAL_FIELDS)[number]["value"];
 
-type SocialLinksInput = CreatorFormValues["socials"];
+type SocialLinksInput = CreatorFormValues["social"];
 type SocialLinkRow = {
   photographer_id: string | null;
   platform: PlatformEnum;
@@ -37,13 +37,13 @@ export const useSubmitCreator = () => {
 
   const mutation = useMutation({
     mutationKey: ["submit-creator"],
-    mutationFn: async ({ name, bio, socials }: CreatorFormValues) => {
+    mutationFn: async ({ name, introduction, social }: CreatorFormValues) => {
       if (!user) throw new Error("로그인 정보가 없습니다.");
 
       // Clerk에 사진 작가로 등록
       if (!user.unsafeMetadata.isCreator) {
         await user.update({
-          unsafeMetadata: { isCreator: true },
+          unsafeMetadata: { isCreator: true, creatorName: name },
         });
       }
 
@@ -53,7 +53,7 @@ export const useSubmitCreator = () => {
         .upsert({
           id: user.id,
           name,
-          introduction: bio,
+          introduction: introduction,
           url: user.imageUrl,
         })
         .select();
@@ -61,13 +61,15 @@ export const useSubmitCreator = () => {
       if (photographerError) throw photographerError;
 
       // socials → socialLinks 변환
-      const socialLinks = toSocialLinks(socials, user.id);
+      const socialLinks = toSocialLinks(social, user.id);
 
       // Supabase에 소셜 플랫폼 데이터 등록
       if (socialLinks.length > 0) {
         const { error: socialError } = await supabase
           .from("photographer_social_links")
-          .insert(socialLinks)
+          .upsert(socialLinks, {
+            onConflict: "platform, photographer_id",
+          })
           .select();
 
         if (socialError)

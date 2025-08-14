@@ -8,10 +8,7 @@ import {
   ClerkLoaded,
 } from "@clerk/react-router";
 import { Button } from "../ui/button";
-import { BoxesIcon, CameraIcon, ImagesIcon } from "lucide-react";
-import SettingPage from "../profile-page/setting-page";
-import CreatorRegisterPage from "../profile-page/creator-register-page";
-import CollectionPage from "../profile-page/collection-page";
+import { CameraIcon } from "lucide-react";
 import AuthAccessMenu from "./auth-access-menu";
 import { Skeleton } from "../ui/skeleton";
 
@@ -54,27 +51,6 @@ export default function AuthProfile() {
                   open="creator"
                 />
               </UserButton.MenuItems>
-              <UserButton.UserProfilePage
-                label="작가 등록"
-                labelIcon={<CameraIcon size={14} />}
-                url="creator"
-              >
-                <CreatorRegisterPage />
-              </UserButton.UserProfilePage>
-              <UserButton.UserProfilePage
-                label="사진⋅컬렉션 관리"
-                labelIcon={<ImagesIcon size={14} />}
-                url="collection"
-              >
-                <CollectionPage />
-              </UserButton.UserProfilePage>
-              <UserButton.UserProfilePage
-                label="기타 설정"
-                labelIcon={<BoxesIcon size={14} />}
-                url="other-settings"
-              >
-                <SettingPage />
-              </UserButton.UserProfilePage>
             </UserButton>
             <AuthAccessMenu />
           </aside>

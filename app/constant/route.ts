@@ -19,14 +19,4 @@ export const ROUTE_LINK = [
     label: "작가",
     icon: UserFocusIcon,
   },
-  {
-    path: "/sign-in",
-    label: "로그인",
-    icon: UserFocusIcon,
-  },
-  {
-    path: "/sign-up",
-    label: "회원가입",
-    icon: UserFocusIcon,
-  },
 ] as const satisfies RouteLink[];

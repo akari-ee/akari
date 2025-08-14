@@ -4,23 +4,23 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "~/components/ui/navigation-menu";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 import SearchBar from "./search-bar";
 import { cn } from "~/lib/utils";
-import AuthProfile from "./auth-profile";
 import { ROUTE_LINK } from "~/constant/route";
 import MobileSideMenu from "./mobile-side-menu";
+import UserButton from "../user-button";
 
 export default function NavBar() {
   const { pathname } = useLocation();
 
   return (
-    <header className="px-4 md:px-6 sticky top-0 left-0 z-50 w-full bg-background transition-all duration-300">
+    <header className="px-4 md:px-12 sticky top-0 left-0 z-50 w-full bg-background transition-all duration-300">
       <div className="flex h-20 items-center justify-between gap-6">
         {/* Left side */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="text-2xl font-light font-josefin h-fit mt-1">
-            <span>AKARI</span>
+            <Link to={"/"}>AKARI</Link>
           </div>
           {/* Main nav */}
           <div className="hidden md:flex gap-4 justify-start ml-2">
@@ -50,14 +50,14 @@ export default function NavBar() {
           <SearchBar />
         </div>
 
+        {/* Auth */}
+        <div className="flex items-center gap-4 lg:min-w-80 lg:justify-end">
+          <UserButton />
+        </div>
+
         {/* Mobile Side Menu */}
         <div className="flex md:hidden">
           <MobileSideMenu />
-        </div>
-
-        {/* Auth */}
-        <div className="hidden md:flex items-center gap-4 lg:min-w-80 lg:justify-end">
-          <AuthProfile />
         </div>
       </div>
     </header>

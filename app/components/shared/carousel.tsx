@@ -22,11 +22,11 @@ function Carousel({ items }: { items: BasePhoto[] }) {
         dragConstraints={{ right: 0, left: -width }}
         dragTransition={{ bounceDamping: 30 }}
         transition={{ duration: 0.2, ease: "easeInOut" }}
-        className="flex will-change-transform cursor-grab active:cursor-grabbing"
+        className="flex will-change-transform cursor-grab active:cursor-grabbing gap-4"
       >
         {items.map(({ url, id }, index) => {
           return (
-            <motion.div key={id} className="min-w-[20rem] min-h-[25rem] p-2">
+            <motion.div key={id} className="min-w-[20rem] min-h-[25rem]">
               <img
                 src={url}
                 width={400}

@@ -28,7 +28,7 @@ export const fetchPhotographerInfo = async (
     .eq("id", id)
     .single<PhotographerWithSocial>()
     .throwOnError();
-
+  
   return data;
 };
 

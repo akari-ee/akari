@@ -11,9 +11,16 @@ import { Button } from "../ui/button";
 import { MenuIcon } from "../menu-icon";
 import { ROUTE_LINK } from "~/constant/route";
 import { Link } from "react-router";
+import {
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  useClerk,
+} from "@clerk/react-router";
 
-// TODO: 로그인 유저 프로필 메뉴 추가
 export default function MobileSideMenu() {
+  const { openSignIn, openSignUp } = useClerk();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -39,9 +46,23 @@ export default function MobileSideMenu() {
               </SheetClose>
             </li>
           ))}
+          <SignedOut>
+            <li className="text-3xl">
+              <SignInButton>
+                <div className="cursor-pointer" onClick={() => openSignIn()}>
+                  로그인
+                </div>
+              </SignInButton>
+            </li>
+            <li className="text-3xl">
+              <SignUpButton>
+                <div className="cursor-pointer" onClick={() => openSignUp()}>
+                  회원가입
+                </div>
+              </SignUpButton>
+            </li>
+          </SignedOut>
         </ul>
-
-        {/* 로그인 유저 프로필 메뉴 */}
       </SheetContent>
     </Sheet>
   );

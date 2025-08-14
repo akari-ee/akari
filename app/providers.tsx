@@ -33,7 +33,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         },
         queryCache: new QueryCache({
           onError: (error) => {
-            toast("Event has been created.");
+            // toast("Event has been created.");
           },
         }),
       })

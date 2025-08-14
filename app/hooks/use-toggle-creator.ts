@@ -16,7 +16,7 @@ export const useToggleCreator = ({
   onDeactivateMsg,
   onErrorMsg,
 }: useToggleCreatorProps) => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const isCreator = user?.unsafeMetadata.isCreator as boolean;
 
   const [loading, setLoading] = useState(false);
@@ -40,5 +40,5 @@ export const useToggleCreator = ({
     }
   };
 
-  return { isCreator, loading, handleToggle };
+  return { isCreator, loading, handleToggle, isUserLoading: !isLoaded };
 };

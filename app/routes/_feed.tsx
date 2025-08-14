@@ -3,7 +3,7 @@ import NavBar from "~/components/shared/nav-bar";
 
 export default function FeedLayout() {
   return (
-    <div className="relative">
+    <div className="relative flex flex-col h-dvh">
       <NavBar />
       <main className="px-6 flex-grow bg-background">
         <Outlet />

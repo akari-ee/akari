@@ -46,23 +46,14 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
           <SuspenseInfiniteQuery {...collectionQueryOptions.list(supabase, 1)}>
             {({ data, fetchNextPage, hasNextPage, isFetchingNextPage }) =>
               data.map((item) => (
-                <InView
-                  triggerOnce
-                  delay={300}
-                  threshold={0.5}
-                  rootMargin="100px"
-                >
-                  {({ ref, isInView }) => (
-                    <div ref={ref} className="h-60 border">
-                      <Link
-                        to={`/collection/view/${item.id}`}
-                        className="h-full block"
-                      >
-                        {isInView ? item.title : "Out of View"}
-                      </Link>
-                    </div>
-                  )}
-                </InView>
+                <div key={item.id} className="h-60 border">
+                  <Link
+                    to={`/collection/view/${item.id}`}
+                    className="h-full block"
+                  >
+                    {item.title}
+                  </Link>
+                </div>
               ))
             }
           </SuspenseInfiniteQuery>

@@ -1,5 +1,5 @@
 import { data } from "react-router";
-import type { Route } from "./+types/_plain.photographer.$id";
+import type { Route } from "./+types/_feed.photographer.$id._index";
 import { createServerClient } from "~/lib/supabase-server";
 import { photographerQueryOptions } from "~/service/photographer";
 import {
@@ -24,7 +24,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const supabase = await createServerClient();
   const queryClient = new QueryClient();
 
-  await Promise.all([
+  await Promise.allSettled([
     queryClient.prefetchQuery(photographerQueryOptions.info(supabase, id)),
     queryClient.prefetchQuery(
       photographerQueryOptions.collection(supabase, id)
@@ -60,7 +60,7 @@ export default function PhotographerDetailRoute({
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <main className="flex flex-col flex-grow max-w-3xl container mx-auto py-8 px-4 h-full">
+      <main className="flex flex-col flex-grow max-w-5xl container mx-auto py-8 px-4 h-full">
         <section className="flex flex-col gap-8 h-full">
           <QueryErrorResetBoundary>
             {({ reset }) => (
