@@ -11,7 +11,7 @@ import {
 import { InView } from "@suspensive/react-dom";
 import { Link } from "react-router";
 import type { Route } from "./+types/_feed.collection";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Masonry, Image } from "gestalt";
 
 export async function loader() {
@@ -37,44 +37,17 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
 
 clientLoader.hydrate = true as const;
 
-function _optionalChain(ops: string | any[]) {
-  let lastAccessLHS: undefined = undefined;
-  let value = ops[0];
-  let i = 1;
-  while (i < ops.length) {
-    const op = ops[i];
-    const fn = ops[i + 1];
-    i += 2;
-    if ((op === "optionalAccess" || op === "optionalCall") && value == null) {
-      return undefined;
-    }
-    if (op === "access" || op === "optionalAccess") {
-      lastAccessLHS = value;
-      value = fn(value);
-    } else if (op === "call" || op === "optionalCall") {
-      value = fn((...args: any) => value.call(lastAccessLHS, ...args));
-      lastAccessLHS = undefined;
-    }
-  }
-  return value;
-}
-
 export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
   const supabase = createBrowserClient();
   const { dehydratedState } = loaderData;
-  const scrollContainerRef = useRef<any>(null);
   const gridRef = useRef<any>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    _optionalChain([
-      gridRef,
-      "access",
-      (_: { current: any }) => _.current,
-      "optionalAccess",
-      (_2: { handleResize: any }) => _2.handleResize,
-      "call",
-      (_3: () => any) => _3(),
-    ]);
+    setIsMounted(true);
+    if (gridRef.current?.handleResize) {
+      gridRef.current.handleResize();
+    }
   }, []);
 
   return (
@@ -83,45 +56,36 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
         <Suspense>
           <SuspenseInfiniteQuery {...collectionQueryOptions.list(supabase, 1)}>
             {({ data, fetchNextPage, hasNextPage, isFetchingNextPage }) => (
-              <div
-                ref={(el) => {
-                  scrollContainerRef.current = el;
-                }}
-                className="w-full h-full flex items-center justify-center"
-                tabIndex={0}
-              >
-                {scrollContainerRef.current && (
-                  <Masonry
-                    ref={(ref) => {
-                      gridRef.current = ref;
-                    }}
-                    columnWidth={320}
-                    gutterWidth={20}
-                    items={data}
-                    layout="flexible"
-                    minCols={1}
-                    renderItem={({ data, itemIdx }) => (
-                      <Link
-                        key={data.id}
-                        to={`/collection/view/${data.id}`}
-                        style={{ contentVisibility: "auto" }}
-                      >
-                        <div className="rounded-lg overflow-hidden">
+              <>
+                <div className="w-full h-full">
+                  {isMounted && (
+                    <Masonry
+                      ref={gridRef}
+                      columnWidth={280}
+                      gutterWidth={15}
+                      items={data}
+                      layout="flexible"
+                      minCols={1}
+                      renderItem={({ data: item, itemIdx }) => (
+                        <Link
+                          key={item.id}
+                          to={`/collection/view/${item.id}`}
+                          className="block rounded-lg overflow-hidden hover:opacity-90 transition-opacity"
+                        >
                           <Image
-                            alt={data.title}
-                            src={data.thumbnail?.url}
-                            color={data.thumbnail.avg_color ?? "#f2f2f2"}
-                            naturalWidth={data.thumbnail.width!}
-                            naturalHeight={data.thumbnail.height!}
+                            alt={item.title}
+                            src={item.thumbnail?.url}
+                            color={item.thumbnail?.avg_color ?? "#f2f2f2"}
+                            naturalWidth={item.thumbnail?.width || 400}
+                            naturalHeight={item.thumbnail?.height || 300}
                             decoding="async"
                             loading={itemIdx < 8 ? "eager" : "lazy"}
                           />
-                        </div>
-                      </Link>
-                    )}
-                    scrollContainer={() => scrollContainerRef.current}
-                  />
-                )}
+                        </Link>
+                      )}
+                    />
+                  )}
+                </div>
                 {hasNextPage && (
                   <InView
                     onChange={(inView) => {
@@ -144,7 +108,7 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
                     )}
                   </InView>
                 )}
-              </div>
+              </>
             )}
           </SuspenseInfiniteQuery>
         </Suspense>

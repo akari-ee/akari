@@ -5,7 +5,7 @@ export default function FeedLayout() {
   return (
     <div className="relative flex flex-col h-dvh">
       <NavBar />
-      <main className="px-6 flex-grow bg-background">
+      <main className="px-4 flex-grow bg-background">
         <Outlet />
       </main>
     </div>
