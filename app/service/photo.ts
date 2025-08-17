@@ -1,11 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { queryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { DEFAULT_PAGE_SIZE } from "~/constant/service";
 import type { BasePhoto } from "~/types/base";
 import type { PhotoDetail } from "~/types/entities";
 
 export interface GetPhotoListParams {
-  pageParam?: number;
+  page?: number;
   pageSize?: number;
   supabase: SupabaseClient;
 }
@@ -15,15 +15,15 @@ export interface GetPhotoDetailParams {
   supabase: SupabaseClient;
 }
 
-export async function getPhotoList({
+export async function fetchPhotoList({
   supabase,
-  pageParam = 1,
-  pageSize = DEFAULT_PAGE_SIZE,
-}: GetPhotoListParams) {
+  page = 1,
+}: GetPhotoListParams): Promise<BasePhoto[]> {
   const { data } = await supabase
     .from("photos")
     .select("*, photographer:photographers(*)")
-    .range((pageParam - 1) * pageSize, pageParam * pageSize - 1)
+    .order("created_at", { ascending: false })
+    .range((page - 1) * DEFAULT_PAGE_SIZE, page * DEFAULT_PAGE_SIZE - 1)
     .overrideTypes<BasePhoto[]>()
     .throwOnError();
 
@@ -48,6 +48,21 @@ export async function getPhotoDetail({
 
 export const photoQueryOptions = {
   all: ["photos"] as const,
+  list: (supabase: SupabaseClient, page: number) =>
+    infiniteQueryOptions({
+      queryKey: ["list", page],
+      queryFn: ({ pageParam = 1 }) =>
+        fetchPhotoList({ supabase, page: pageParam }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, pages, lastPageParam) => {
+        const hasMore =
+          Array.isArray(lastPage) && lastPage.length >= DEFAULT_PAGE_SIZE;
+        return hasMore ? lastPageParam + 1 : undefined;
+      },
+      select: (data) => {
+        return data.pages.flat();
+      },
+    }),
   detail: (supabase: SupabaseClient, id: BasePhoto["id"]) =>
     queryOptions({
       queryKey: [...photoQueryOptions.all, "detail", id] as const,

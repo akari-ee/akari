@@ -13,6 +13,7 @@ import { Link } from "react-router";
 import type { Route } from "./+types/_feed.collection";
 import { useEffect, useRef, useState } from "react";
 import { Masonry, Image } from "gestalt";
+import { DEFAULT_PAGE_SIZE } from "~/constant/service";
 
 export async function loader() {
   const supabase = await createServerClient();
@@ -79,7 +80,9 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
                             naturalWidth={item.thumbnail?.width || 400}
                             naturalHeight={item.thumbnail?.height || 300}
                             decoding="async"
-                            loading={itemIdx < 8 ? "eager" : "lazy"}
+                            loading={
+                              itemIdx < DEFAULT_PAGE_SIZE ? "eager" : "lazy"
+                            }
                           />
                         </Link>
                       )}
