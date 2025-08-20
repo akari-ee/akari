@@ -7,7 +7,7 @@ import {
 import { ThemeProvider } from "next-themes";
 import { toast } from "sonner";
 import { CToast } from "./components/shared/custom-toast";
-import { TooltipProvider } from "./components/ui/tooltip";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -16,6 +16,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         defaultOptions: {
           queries: {
             staleTime: 60 * 1000 * 10,
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+            refetchOnMount: false,
             retry: false,
             refetchInterval: false,
             throwOnError: false,
@@ -40,7 +43,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   );
   return (
     <ThemeProvider defaultTheme={"light"} attribute="class">
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

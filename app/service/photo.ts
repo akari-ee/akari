@@ -50,7 +50,7 @@ export const photoQueryOptions = {
   all: ["photos"] as const,
   list: (supabase: SupabaseClient, page: number) =>
     infiniteQueryOptions({
-      queryKey: ["list", page],
+      queryKey: [...photoQueryOptions.all, "list", page],
       queryFn: ({ pageParam = 1 }) =>
         fetchPhotoList({ supabase, page: pageParam }),
       initialPageParam: 1,

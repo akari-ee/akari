@@ -53,6 +53,7 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
                     {data.map((item, itemIdx) => (
                       <Link
                         key={item.id}
+                        prefetch="render"
                         to={`/collection/view/${item.id}`}
                         className="group block rounded-lg overflow-hidden hover:opacity-90 transition-all duration-300 relative break-inside-avoid mb-4"
                         style={{

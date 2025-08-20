@@ -15,7 +15,7 @@ export default function SettingLayout() {
         <aside className="lg:basis-1/6 shrink-0 border-b pb-4 lg:border-b-0 lg:border-r px-4 flex flex-row justify-between lg:flex-col items-center">
           <ul className="flex flex-row gap-4 font-semibold lg:flex-col lg:gap-6 w-full">
             <li>
-              <NavLink to={`/setting/${id}/profile`}>
+              <NavLink to={`/setting/${id}/profile`} prefetch="viewport">
                 {({ isActive }) => (
                   <span
                     className={cn(
@@ -31,7 +31,7 @@ export default function SettingLayout() {
               </NavLink>
             </li>
             <li>
-              <NavLink to={`/setting/${id}/else`}>
+              <NavLink to={`/setting/${id}/else`} prefetch="viewport">
                 {({ isActive }) => (
                   <span
                     className={cn(
@@ -54,7 +54,7 @@ export default function SettingLayout() {
               className="offset-border"
               size={"sm"}
             >
-              <Link to={`/photographer/${id}`} className="border ">
+              <Link to={`/photographer/${id}`} className="border" prefetch="viewport">
                 <CaretLeftIcon />
                 프로필로 이동
               </Link>

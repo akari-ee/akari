@@ -27,6 +27,7 @@ export default function PhotographerProfile({
             <PhotographerSettingButton id={photographer.id} />
             <Link
               to={`/setting/${photographer.id}/profile`}
+              prefetch="viewport"
               className="text-sm underline underline-offset-2 hidden lg:flex"
             >
               설정

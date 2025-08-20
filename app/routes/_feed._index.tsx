@@ -72,7 +72,7 @@ export default function MainRoute({ loaderData }: Route.ComponentProps) {
                       gutterWidth={15}
                       items={data}
                       layout="flexible"
-                      minCols={1}
+                      minCols={2}
                       renderItem={({ data: item, itemIdx }) => (
                         <div
                           key={item.id}

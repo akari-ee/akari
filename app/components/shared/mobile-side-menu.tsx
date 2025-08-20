@@ -42,7 +42,9 @@ export default function MobileSideMenu() {
           {ROUTE_LINK.map(({ label, path }) => (
             <li className="text-3xl">
               <SheetClose asChild>
-                <Link to={path}>{label}</Link>
+                <Link to={path} prefetch="viewport">
+                  {label}
+                </Link>
               </SheetClose>
             </li>
           ))}

@@ -53,7 +53,7 @@ export const collectionQueryOptions = {
   all: ["collection"] as const,
   list: (supabase: SupabaseClient, page: number) =>
     infiniteQueryOptions({
-      queryKey: ["list", page],
+      queryKey: [...collectionQueryOptions.all, "list", page],
       queryFn: ({ pageParam = 1 }) => fetchCollectionList(supabase, pageParam),
       initialPageParam: 1,
       getNextPageParam: (lastPage, pages, lastPageParam) => {

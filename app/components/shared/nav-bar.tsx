@@ -30,13 +30,15 @@ export default function NavBar() {
                 {ROUTE_LINK.slice(0, 3).map(({ path, label }, index) => (
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
-                      href={path}
+                      asChild
                       className={cn(
                         "text-muted-foreground hover:text-primary py-1.5 font-medium hover:bg-inherit",
                         pathname === path ? "text-primary font-medium" : ""
                       )}
                     >
-                      {label}
+                      <Link to={path} prefetch="viewport">
+                        {label}
+                      </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
