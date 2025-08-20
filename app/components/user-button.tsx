@@ -70,7 +70,7 @@ export default function UserButton() {
       <DropdownMenuContent
         className="w-56 shadow-sm rounded-2xl"
         align="end"
-        sideOffset={12}
+        sideOffset={6}
       >
         <DropdownMenuLabel className="flex flex-col gap-1">
           <span>{user?.username}</span>

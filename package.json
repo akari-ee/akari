@@ -32,6 +32,7 @@
     "@react-router/fs-routes": "^7.7.0",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
+    "@ssgoi/react": "^2.0.0",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.51.0",
     "@suspensive/react": "^3.3.2",
