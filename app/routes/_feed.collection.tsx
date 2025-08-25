@@ -77,11 +77,7 @@ export default function CollectionRoute({ loaderData }: Route.ComponentProps) {
                         />
                         {/* 상단 좌측 photographer.name */}
                         <div className="absolute top-0 left-0  to-transparent p-3 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                          <Badge asChild>
-                            <Link to="/">
-                              @{item.photographer?.name || "Unknown"}
-                            </Link>
-                          </Badge>
+                          <Badge>@{item.photographer?.name || "Unknown"}</Badge>
                         </div>
                         {/* 하단 title과 description */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
