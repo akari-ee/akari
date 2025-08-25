@@ -20,6 +20,7 @@ import { koKR } from "@clerk/localizations";
 import { Button } from "./components/ui/button";
 import { shadcn } from "@clerk/themes";
 import { useEffect } from "react";
+import { initServiceWorker } from "./hooks/use-service-worker";
 
 export async function loader(args: Route.LoaderArgs) {
   return rootAuthLoader(args);
@@ -75,20 +76,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if ("serviceWorker" in navigator) {
-      const register = async () => {
-        try {
-          await navigator.serviceWorker.register("/sw.js", { scope: "/" });
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error("Service worker registration failed:", error);
-        }
-      };
-      register();
-    }
-  }, []);
+  // 서비스 워커 등록
+  initServiceWorker();
+
   return (
     <ClerkProvider
       loaderData={loaderData}
